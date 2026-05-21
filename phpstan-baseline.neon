@@ -1,0 +1,133 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \#1 \$string of function str_pad expects string, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Filament/Resources/Pengirimans/Schemas/PengirimanForm.php
+
+		-
+			message: '#^Parameter \#1 \$string of function str_pad expects string, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Filament/Resources/PesananDetails/Schemas/PesananDetailForm.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Pelanggan\:\:\$nama_pelanggan\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Filament/Resources/Pesanans/Schemas/PesananForm.php
+
+		-
+			message: '#^Parameter \#1 \$string of function str_pad expects string, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Filament/Resources/Pesanans/Schemas/PesananForm.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\KeranjangItem\:\:\$keranjang\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Controllers/Api/CartController.php
+
+		-
+			message: '#^Relation ''items'' is not found in App\\Models\\Keranjang model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Http/Controllers/Api/CartController.php
+
+		-
+			message: '#^Relation ''keranjang'' is not found in App\\Models\\KeranjangItem model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Http/Controllers/Api/CartController.php
+
+		-
+			message: '#^Relation ''produk'' is not found in App\\Models\\KeranjangItem model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Http/Controllers/Api/CartController.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>qty" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Controllers/Api/CartController.php
+
+		-
+			message: '#^Relation ''produk'' is not found in App\\Models\\KeranjangItem model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Http/Controllers/Api/CheckoutController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Keranjang\:\:\$items\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/DashboardController.php
+
+		-
+			message: '#^Relation ''items'' is not found in App\\Models\\Keranjang model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Http/Controllers/Api/DashboardController.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>total" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Controllers/Api/DashboardController.php
+
+		-
+			message: '#^Relation ''produk'' is not found in App\\Models\\Favorite model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Http/Controllers/Api/FavoriteController.php
+
+		-
+			message: '#^Relation ''produks'' is not found in App\\Models\\Kategori model\.$#'
+			identifier: larastan.relationExistence
+			count: 1
+			path: app/Http/Controllers/Api/KategoriController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Pesanan\:\:\$details\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/PesananController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Pesanan\:\:\$pembayaran\.$#'
+			identifier: property.notFound
+			count: 4
+			path: app/Http/Controllers/Api/PesananController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Pesanan\:\:\$pengiriman\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/Api/PesananController.php
+
+		-
+			message: '#^Relation ''details'' is not found in App\\Models\\Pesanan model\.$#'
+			identifier: larastan.relationExistence
+			count: 3
+			path: app/Http/Controllers/Api/PesananController.php
+
+		-
+			message: '#^Relation ''pembayaran'' is not found in App\\Models\\Pesanan model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Http/Controllers/Api/PesananController.php
+
+		-
+			message: '#^Relation ''pengiriman'' is not found in App\\Models\\Pesanan model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Http/Controllers/Api/PesananController.php
+
+		-
+			message: '#^Relation ''kategori'' is not found in App\\Models\\Produk model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Http/Controllers/Api/ProdukController.php
