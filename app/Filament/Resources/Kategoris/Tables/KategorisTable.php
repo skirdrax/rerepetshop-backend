@@ -21,7 +21,7 @@ class KategorisTable
         
 
     TextColumn::make('nama_kategori')
-        ->label('Nama Kategoris')
+        ->label('Nama Kategori')
         ->searchable(),
 
     TextColumn::make('created_at')
