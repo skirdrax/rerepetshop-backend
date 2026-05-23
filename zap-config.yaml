@@ -1,0 +1,52 @@
+# OWASP ZAP Configuration File for RerePetshop API
+# Target: https://api.rerepetshop.biz.id
+# Date: 23 May 2026
+
+env:
+  contexts:
+    - name: "RerePetshop-API-Context"
+      urls:
+        - "https://api.rerepetshop.biz.id"
+      includePaths:
+        - "https://api.rerepetshop.biz.id.*"
+      excludePaths:
+        - "https://api.rerepetshop.biz.id/logout"
+      technology:
+        include:
+          - "JSON"
+          - "Laravel"
+          - "REST"
+
+  parameters:
+    failOnError: false
+    progressToStdout: true
+
+jobs:
+  - type: "spider"
+    parameters:
+      url: "https://api.rerepetshop.biz.id"
+      maxDuration: 10
+      maxDepth: 5
+
+  - type: "passiveScan"
+    parameters:
+      enabled: true
+
+  - type: "activeScan"
+    parameters:
+      target: "https://api.rerepetshop.biz.id"
+      maxDuration: 60
+      policy: "Default Policy"
+
+  - type: "baselineScan"
+    parameters:
+      target: "https://api.rerepetshop.biz.id"
+      maxDuration: 30
+      alertThreshold: "MEDIUM"
+
+  - type: "report"
+    parameters:
+      template: "traditional-html"
+      reportDir: "/zap/wrk"
+      title: "ZAP Scan Report - RerePetshop API"
+      description: "Hasil DAST scan menggunakan OWASP ZAP baseline scan"
