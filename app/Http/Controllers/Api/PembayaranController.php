@@ -191,53 +191,68 @@ class PembayaranController extends Controller
         }
     }
 
-    public function webhook(Request $request)
-    {
-        Config::$serverKey = config('midtrans.server_key');
-        Config::$isProduction = false;
+   public function webhook(Request $request)
+{
+    Config::$serverKey = config('midtrans.server_key');
+    Config::$isProduction = false;
 
-        try {
-            $notif = new Notification();
+    try {
+        $notif = new Notification();
 
-            $orderId       = $notif->order_id;
-            $transactionStatus = $notif->transaction_status;
-            $fraudStatus   = $notif->fraud_status;
-            $resolvedMethod = $this->resolveMidtransMethodFromData(
-                $notif->payment_type ?? null,
-                $notif->va_numbers ?? null,
-                $notif->store ?? null,
-            );
+        // PERBAIKAN 1: Gunakan null coalescing operator untuk mencegah undefined property
+        $orderId = $notif->order_id ?? null;
+        $transactionStatus = $notif->transaction_status ?? null;
+        $fraudStatus = $notif->fraud_status ?? null;
+        
+        $resolvedMethod = $this->resolveMidtransMethodFromData(
+            $notif->payment_type ?? null,
+            $notif->va_numbers ?? null,
+            $notif->store ?? null,
+        );
 
-            $idPesanan = explode('-', $orderId)[1];
-
-            $pembayaran = Pembayaran::where('id_pesanan', $idPesanan)->first();
-
-            if (!$pembayaran) {
-                return response()->json(['message' => 'Pembayaran tidak ditemukan'], 404);
-            }
-
-            if ($resolvedMethod) {
-                $pembayaran->metode_bayar = $resolvedMethod;
-            }
-
-            $resolvedStatus = $this->mapTransactionStatusToPaymentStatus($transactionStatus, $fraudStatus);
-
-            if ($resolvedStatus) {
-                $pembayaran->status_bayar = $resolvedStatus;
-            }
-
-            if ($resolvedStatus === 'paid') {
-                $pembayaran->waktu_bayar  = now();
-            }
-
-            $pembayaran->save();
-
-            return response()->json(['message' => 'Webhook berhasil diproses']);
-
-        } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+        // PERBAIKAN 2: Validasi data wajib sebelum diproses
+        if (!$orderId) {
+            return response()->json([
+                'message' => 'Notifikasi tidak valid: order_id tidak ditemukan'
+            ], 400);
         }
+
+        $idPesanan = explode('-', $orderId)[1] ?? null;
+
+        if (!$idPesanan) {
+            return response()->json([
+                'message' => 'Format order_id tidak valid'
+            ], 400);
+        }
+
+        $pembayaran = Pembayaran::where('id_pesanan', $idPesanan)->first();
+
+        if (!$pembayaran) {
+            return response()->json(['message' => 'Pembayaran tidak ditemukan'], 404);
+        }
+
+        if ($resolvedMethod) {
+            $pembayaran->metode_bayar = $resolvedMethod;
+        }
+
+        $resolvedStatus = $this->mapTransactionStatusToPaymentStatus($transactionStatus, $fraudStatus);
+
+        if ($resolvedStatus) {
+            $pembayaran->status_bayar = $resolvedStatus;
+        }
+
+        if ($resolvedStatus === 'paid') {
+            $pembayaran->waktu_bayar = now();
+        }
+
+        $pembayaran->save();
+
+        return response()->json(['message' => 'Webhook berhasil diproses']);
+
+    } catch (\Exception $e) {
+        return response()->json(['message' => $e->getMessage()], 500);
     }
+}
 
     // ⬇️ INI METHOD SHOW YANG SUDAH DIPERBAIKI (TANPA AUTH)
     public function show($id)
