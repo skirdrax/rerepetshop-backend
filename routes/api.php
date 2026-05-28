@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Password;  // ✅ tambah ini untuk fitur reset password
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProdukController;
@@ -214,41 +213,3 @@ Route::get('/image/{path}', [ImageController::class, 'show'])
 
 Route::options('/image/{path}', [ImageController::class, 'options'])
     ->where('path', '.*');
-
-/*
-|--------------------------------------------------------------------------
-| FORGOT PASSWORD (LINK RESET VIA EMAIL) - TAMBAHAN
-|--------------------------------------------------------------------------
-*/
-
-Route::post('/forgot-password-link', function (Request $request) {
-    $request->validate([
-        'email' => 'required|email|exists:users,email'
-    ]);
-
-    $status = Password::sendResetLink($request->only('email'));
-
-    return $status === Password::RESET_LINK_SENT
-        ? response()->json(['message' => 'Link reset password telah dikirim ke email Anda.'], 200)
-        : response()->json(['message' => 'Gagal mengirim link reset.'], 400);
-});
-
-Route::post('/reset-password-link', function (Request $request) {
-    $request->validate([
-        'email' => 'required|email',
-        'token' => 'required|string',
-        'password' => 'required|min:6|confirmed'
-    ]);
-
-    $status = Password::reset(
-        $request->only('email', 'password', 'password_confirmation', 'token'),
-        function ($user, $password) {
-            $user->password = bcrypt($password);
-            $user->save();
-        }
-    );
-
-    return $status === Password::PASSWORD_RESET
-        ? response()->json(['message' => 'Password berhasil direset. Silakan login.'], 200)
-        : response()->json(['message' => 'Token tidak valid atau sudah kadaluarsa.'], 400);
-});
