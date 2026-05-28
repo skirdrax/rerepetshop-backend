@@ -13,10 +13,8 @@ class SecurityHeadersMiddleware
         // D-02: Anti-clickjacking
         $response->headers->set('X-Frame-Options', 'DENY');
 
+        // D-05: MIME Sniffing Prevention
         $response->headers->set('X-Content-Type-Options', 'nosniff');
-        
-        // D-04: HSTS
-        $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
         
         // D-01: CSP
         $response->headers->set('Content-Security-Policy', "default-src 'self'");
